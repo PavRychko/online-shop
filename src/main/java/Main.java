@@ -1,12 +1,23 @@
 import jdbc.queries.Query;
-
-import java.sql.SQLException;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import servlets.AllRequestServlet;
 
 public class Main {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws Exception {
+//        AllRequestServlet allRequestServlet = new AllRequestServlet();
+//
+//        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        context.addServlet(new ServletHolder(allRequestServlet), "/*");
+//
+//        Server server = new Server(8080);
+//        server.setHandler(context);
+//
+//        server.start();
         Query query = new Query();
-        query.addProduct("apple", 200);
-        query.addProduct("pineApple", 300);
-        query.addProduct("pomegranate", 10);
+        query.addProduct("banana", 100);
+        query.addProduct("banana", 200);
+        query.getProducts();
     }
 }

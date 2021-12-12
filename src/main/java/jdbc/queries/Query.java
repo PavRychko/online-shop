@@ -1,10 +1,15 @@
 package jdbc.queries;
 
+import entity.Product;
+
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.*;
 
 public class Query {
-    String url = "jdbc:postgresql://192.168.99.100:5432/postgres";
+    String url = "jdbc:postgresql://localhost:5432/postgres";
     String user = "postgres";
     String password = "mypwd";
 
@@ -24,41 +29,50 @@ public class Query {
     private static final String GET_ALL_PRODUCTS = "Select * from Products;";
 
 
-    public void createProducts() throws SQLException {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            Statement statement = connection.createStatement();
-            statement.execute(CREATE_TABLE_PRODUCTS);
-        }
+    public void createProductsTable() throws SQLException {
+        executeQuery(CREATE_TABLE_PRODUCTS);
     }
 
     public void addProduct(String name, int price) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            Statement statement = connection.createStatement();
-            String insertQuery = INSERT_INTO_PRODUCTS.concat("('" + name + "', " + price + ", '" + Timestamp.valueOf(LocalDateTime.now()) + "');");
-            statement.execute(insertQuery);
-        }
+        String insertQuery = INSERT_INTO_PRODUCTS.concat("('" + name + "', " + price + ", '" + Timestamp.valueOf(LocalDateTime.now().withNano(0).withSecond(0)) + "');");
+        executeQuery(insertQuery);
+
     }
 
-    public void getProducts() throws SQLException {
+    public List<Product> getProducts() throws SQLException {
+        List<Product> products = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            Statement statement = connection.createStatement();
-            statement.execute(GET_ALL_PRODUCTS);
+            PreparedStatement statement = connection.prepareStatement(GET_ALL_PRODUCTS);
+            ResultSet resultSet =  statement.executeQuery();
+            while (resultSet.next()){
+                Product product = new Product(resultSet);
+                products.add(product);
+            }
         }
+        return products;
+
     }
 
-    public void deleteProduct(String name) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            Statement statement = connection.createStatement();
-            String deleteQuery = "delete from products where name = '" + name + "';";
-            statement.execute(deleteQuery);
-        }
+    public void deleteProduct(int productId) throws SQLException {
+        String deleteQuery = "delete from products where id = '" + productId + "';";
+        executeQuery(deleteQuery);
+
     }
 
-    public void changeProduct(String oldName, int oldPrice, String newName, int newPrice) throws SQLException {
+    public void changeProduct(int productId, String newName, int newPrice) throws SQLException {
+        String updateQuery = "UPDATE products SET name = '" + newName + "', price = " + newPrice + "WHERE id = " + productId + ";";
+        executeQuery(updateQuery);
+    }
+
+    public void deleteAll() throws SQLException {
+        executeQuery("DROP TABLE Products;");
+        createProductsTable();
+    }
+
+    private void executeQuery(String query) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            Statement statement = connection.createStatement();
-            String updateQuery = "UPDATE products SET name = '" + newName + "', price = " + newPrice + "WHERE name = '" + oldName + "' and price = " + oldPrice + ";";
-            statement.execute(updateQuery);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.executeQuery();
         }
     }
 
