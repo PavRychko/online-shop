@@ -43,8 +43,8 @@ public class Query {
         List<Product> products = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password)) {
             PreparedStatement statement = connection.prepareStatement(GET_ALL_PRODUCTS);
-            ResultSet resultSet =  statement.executeQuery();
-            while (resultSet.next()){
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
                 Product product = new Product(resultSet);
                 products.add(product);
             }

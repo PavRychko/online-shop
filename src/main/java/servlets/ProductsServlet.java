@@ -18,7 +18,7 @@ public class ProductsServlet extends HttpServlet {
         Map<String, Object> parameters = new HashMap<>();
         PageGenerator pageGenerator = PageGenerator.instance();
 
-        try{
+        try {
             String page = pageGenerator.getPage("productsTable.html", parameters);
             resp.getWriter().write(page);
         } catch (SQLException throwable) {

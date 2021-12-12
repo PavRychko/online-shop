@@ -16,7 +16,7 @@ public class AllRequestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> parameters = new HashMap<>();
         PageGenerator pageGenerator = PageGenerator.instance();
-        try{
+        try {
             String page = pageGenerator.getPage("page.html", parameters);
             resp.getWriter().write(page);
         } catch (SQLException throwable) {

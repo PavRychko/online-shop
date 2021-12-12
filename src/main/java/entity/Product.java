@@ -11,7 +11,7 @@ public class Product {
     Timestamp creationDate;
 
 
-     public Product(ResultSet resultSet) throws SQLException {
+    public Product(ResultSet resultSet) throws SQLException {
         id = resultSet.getInt("id");
         name = resultSet.getString("name");
         price = resultSet.getInt("price");

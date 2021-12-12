@@ -6,18 +6,15 @@ import servlets.AllRequestServlet;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-//        AllRequestServlet allRequestServlet = new AllRequestServlet();
-//
-//        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        context.addServlet(new ServletHolder(allRequestServlet), "/*");
-//
-//        Server server = new Server(8080);
-//        server.setHandler(context);
-//
-//        server.start();
-        Query query = new Query();
-        query.addProduct("banana", 100);
-        query.addProduct("banana", 200);
-        query.getProducts();
+        AllRequestServlet allRequestServlet = new AllRequestServlet();
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+        context.addServlet(new ServletHolder(allRequestServlet), "/*");
+
+        Server server = new Server(8080);
+        server.setHandler(context);
+
+        server.start();
+
     }
 }
