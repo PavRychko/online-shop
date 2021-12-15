@@ -6,7 +6,6 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.*;
 
 public class Query {
     String url = "jdbc:postgresql://localhost:5432/postgres";
@@ -24,7 +23,7 @@ public class Query {
 
     private static final String INSERT_INTO_PRODUCTS = """
             INSERT INTO Products(name, price, creationDate)
-            VALUES """;
+            VALUES(?, ?, ?)""";
 
     private static final String GET_ALL_PRODUCTS = "Select * from Products;";
 
