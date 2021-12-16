@@ -1,5 +1,6 @@
-package jdbc.queries;
+package dao.jdbc;
 
+import dao.mapper.ProductRowMapper;
 import entity.Product;
 
 import java.sql.*;
@@ -38,18 +39,23 @@ public class Query {
 
     }
 
-    public List<Product> getProducts() throws SQLException {
+    public List<Product> getProducts()  {
         List<Product> products = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
+
+        try(Connection connection = getConnection()){
             PreparedStatement statement = connection.prepareStatement(GET_ALL_PRODUCTS);
             ResultSet resultSet = statement.executeQuery();
+            ProductRowMapper productRowMapper = new ProductRowMapper();
+
             while (resultSet.next()) {
-                Product product = new Product(resultSet);
+                Product product = productRowMapper.mapRow(resultSet) ;
                 products.add(product);
+
             }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
         return products;
-
     }
 
     public void deleteProduct(int productId) throws SQLException {
@@ -69,10 +75,15 @@ public class Query {
     }
 
     private void executeQuery(String query) throws SQLException {
-        try (Connection connection = DriverManager.getConnection(url, user, password)) {
-            PreparedStatement statement = connection.prepareStatement(query);
+        try(PreparedStatement statement = getConnection().prepareStatement(query)) {
             statement.executeQuery();
         }
+    }
+
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, password);
+
+
     }
 
 }

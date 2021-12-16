@@ -17,7 +17,6 @@ public class ProductsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> parameters = new HashMap<>();
         PageGenerator pageGenerator = PageGenerator.instance();
-
         try {
             String page = pageGenerator.getPage("productsTable.html", parameters);
             resp.getWriter().write(page);
