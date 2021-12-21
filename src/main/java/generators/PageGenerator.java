@@ -8,6 +8,7 @@ import freemarker.template.TemplateException;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Map;
 
 public class PageGenerator {
@@ -20,6 +21,10 @@ public class PageGenerator {
         if (pageGenerator == null)
             pageGenerator = new PageGenerator();
         return pageGenerator;
+    }
+
+    public String getPage(String fileName) throws SQLException {
+        return getPage(fileName, Collections.emptyMap());
     }
 
     public String getPage(String filename, Map<String, Object> data) throws SQLException {

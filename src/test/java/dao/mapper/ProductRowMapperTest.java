@@ -35,7 +35,5 @@ public class ProductRowMapperTest {
         assertEquals("tomato", actual.getName());
         assertEquals(10, actual.getPrice());
         assertEquals(timestampForMock, actual.getCreationDate());
-
-
     }
 }

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Query {
-    String url = "jdbc:postgresql://localhost:5432/postgres";
+    String url = "jdbc:postgresql://192.168.99.100:5432/postgres";
     String user = "postgres";
     String password = "mypwd";
 
     private static final String CREATE_TABLE_PRODUCTS = """
-            CREATE TABLE Products 
+            CREATE TABLE products 
             (
             id serial primary key not null,
             name varchar(100) not null,
@@ -24,7 +24,7 @@ public class Query {
 
     private static final String INSERT_INTO_PRODUCTS = """
             INSERT INTO Products(name, price, creationDate)
-            VALUES(?, ?, ?)""";
+            VALUES""";
 
     private static final String GET_ALL_PRODUCTS = "Select * from Products;";
 
@@ -33,29 +33,30 @@ public class Query {
         executeQuery(CREATE_TABLE_PRODUCTS);
     }
 
-    public void addProduct(String name, int price) throws SQLException {
+    public Product addProduct(String name, int price) throws SQLException {
         String insertQuery = INSERT_INTO_PRODUCTS.concat("('" + name + "', " + price + ", '" + Timestamp.valueOf(LocalDateTime.now().withNano(0).withSecond(0)) + "');");
         executeQuery(insertQuery);
-
+         List<Product> list  = getProducts();
+         if(list.size() > 0){
+             return list.get(list.size()-1);
+         }
+        return null;
     }
 
-    public List<Product> getProducts()  {
+    public List<Product> getProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
-
-        try(Connection connection = getConnection()){
-            PreparedStatement statement = connection.prepareStatement(GET_ALL_PRODUCTS);
+        try (PreparedStatement statement = getConnection().prepareStatement(GET_ALL_PRODUCTS)) {
             ResultSet resultSet = statement.executeQuery();
             ProductRowMapper productRowMapper = new ProductRowMapper();
-
             while (resultSet.next()) {
-                Product product = productRowMapper.mapRow(resultSet) ;
+                Product product = productRowMapper.mapRow(resultSet);
                 products.add(product);
-
             }
-        }catch (SQLException e){
+            return products;
+        }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return products;
     }
 
     public void deleteProduct(int productId) throws SQLException {
@@ -71,12 +72,11 @@ public class Query {
 
     public void deleteAll() throws SQLException {
         executeQuery("DROP TABLE Products;");
-        createProductsTable();
     }
 
     private void executeQuery(String query) throws SQLException {
-        try(PreparedStatement statement = getConnection().prepareStatement(query)) {
-            statement.executeQuery();
+        try (PreparedStatement statement = getConnection().prepareStatement(query)) {
+           statement.executeUpdate();
         }
     }
 
