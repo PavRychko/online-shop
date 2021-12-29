@@ -1,6 +1,8 @@
 package servlets;
 
+
 import generators.PageGenerator;
+import service.ProductService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,8 @@ public class ProductsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String, Object> parameters = new HashMap<>();
         PageGenerator pageGenerator = PageGenerator.instance();
+        ProductService productService = new ProductService();
+        parameters.put("products", productService.getAll());
         try {
             String page = pageGenerator.getPage("productsTable.html", parameters);
             resp.getWriter().write(page);

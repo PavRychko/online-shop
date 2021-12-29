@@ -82,8 +82,6 @@ public class Query {
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, password);
-
-
     }
 
 }

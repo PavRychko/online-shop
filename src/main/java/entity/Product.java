@@ -40,4 +40,14 @@ public class Product {
     public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

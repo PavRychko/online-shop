@@ -10,7 +10,7 @@ public class Main {
         ProductsServlet productsServlet = new ProductsServlet();
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(allRequestServlet), "/*");
-        context.addServlet(new ServletHolder(productsServlet),"/products");
+        context.addServlet(new ServletHolder(productsServlet), "/products");
         Server server = new Server(8080);
         server.setHandler(context);
         server.start();

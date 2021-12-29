@@ -16,6 +16,7 @@ public class QueryITest {
     public void createTableProducts() throws SQLException {
         query.createProductsTable();
     }
+
     @Test
     public void addProductAndGetProductsTest() throws SQLException {
         Product testProduct = query.addProduct("apple", 200);
@@ -27,8 +28,8 @@ public class QueryITest {
         List<Product> products = query.getProducts();
         assertFalse(products.isEmpty());
         assertTrue(products.contains(testProduct));
-        assertEquals(products.get(products.size()-1).getName(), testProduct.getName());
-        assertEquals(products.get(products.size()-1).getPrice(), testProduct.getPrice());
+        assertEquals(products.get(products.size() - 1).getName(), testProduct.getName());
+        assertEquals(products.get(products.size() - 1).getPrice(), testProduct.getPrice());
     }
 
 
