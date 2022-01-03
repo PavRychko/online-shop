@@ -26,7 +26,7 @@ public class ProductRowMapperTest {
 
         LocalDateTime dateTime = LocalDateTime.of(2021, Month.APRIL, 12, 10, 22, 14);
         Timestamp timestampForMock = Timestamp.valueOf(dateTime);
-        when(mockResultSet.getTimestamp("date")).thenReturn(timestampForMock);
+        when(mockResultSet.getTimestamp("creationDate")).thenReturn(timestampForMock);
 
         Product actual = productRowMapper.mapRow(mockResultSet);
 

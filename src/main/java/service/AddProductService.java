@@ -1,20 +1,23 @@
 package service;
 
-import dao.jdbc.Query;
+import dao.jdbc.JdbcProductsDao;
 import entity.Product;
 
 
 public class AddProductService {
-    Query query = new Query();
+    JdbcProductsDao jdbcProductsDao = new JdbcProductsDao();
 
-    public void addProduct(Product product) {
+    public Product addProduct(Product product) {
+        Product resultProduct = null;
         try {
-            Product resultProduct = query.addProduct(product.getName(), product.getPrice());
+            resultProduct = jdbcProductsDao.addProduct(product.getName(), product.getPrice());
             if (null != resultProduct) {
                 System.out.println("product successfully added!");
             }
         } catch (Exception e) {
             System.out.println("product is not added!\n" + e.getMessage());
+
         }
+        return resultProduct;
     }
 }

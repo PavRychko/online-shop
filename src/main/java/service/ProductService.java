@@ -1,6 +1,6 @@
 package service;
 
-import dao.jdbc.Query;
+import dao.jdbc.JdbcProductsDao;
 import entity.Product;
 
 import java.sql.SQLException;
@@ -8,14 +8,14 @@ import java.util.Collections;
 import java.util.List;
 
 public class ProductService {
-    private Query productDaoQuery = new Query();
+    private final JdbcProductsDao jdbcProductsDao = new JdbcProductsDao();
 
     public List<Product> getAll()  {
         List<Product> list = null;
         try {
-            list = productDaoQuery.getProducts();
+            list = jdbcProductsDao.getProducts();
             if (null == list) {
-                productDaoQuery.createProductsTable();
+                jdbcProductsDao.createProductsTable();
                 return Collections.emptyList();
             }
         }catch (SQLException e){
