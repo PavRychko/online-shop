@@ -6,10 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ProductFromRequestMapper {
 
-    public Product getProductFromRequest(HttpServletRequest req) {
+    public Product getProductFromRequest(HttpServletRequest request) {
         Product product = new Product();
-        product.setName(req.getParameter("name"));
-        product.setPrice(Integer.parseInt(req.getParameter("price")));
+        String parameter = request.getParameter("id");
+        product.setName(request.getParameter("name"));
+        product.setPrice(Integer.parseInt(request.getParameter("price")));
+        if (parameter != null) {
+            product.setId(Integer.parseInt(request.getParameter("id")));
+        }
         return product;
     }
 }

@@ -2,11 +2,14 @@ package dao.jdbc;
 
 import dao.mapper.ProductRowMapper;
 import entity.Product;
+import lombok.NoArgsConstructor;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
 
 public class JdbcProductsDao {
     String url = "jdbc:postgresql://192.168.99.100:5432/postgres";
@@ -20,13 +23,13 @@ public class JdbcProductsDao {
             price int not null,
             creationDate Timestamp
             );""";
-    private static final String GET_ALL_PRODUCTS = "Select * from Products;";
-    private static final String GET_PRODUCT_BY_ID = "Select * from Products where id = ? ";
+    private static final String GET_ALL_PRODUCTS = "Select id, name, price, creationDate from Products;";
+    private static final String GET_PRODUCT_BY_ID = "Select id, name, price, creationDate from Products where id = ? ";
     private static final String INSERT_INTO_PRODUCTS = """
             INSERT INTO Products(name, price, creationDate)
             VALUES( ?, ?, ?)""";
 
-    private static final String UPDATE_PRODUCT = "Update products set name = ?, price = ? where id = ?";
+    private static final String UPDATE_PRODUCT = "Update products set name = ?, price = ?, creationDate = ? where id = ?";
     private static final String DELETE_FROM_PRODUCTS_BY_ID = "Delete from products where id = ?";
 
 
@@ -79,9 +82,10 @@ public class JdbcProductsDao {
     public Product updateProduct(int productId, String newName, int newPrice) throws SQLException {
         try (PreparedStatement statement = getConnection().prepareStatement(UPDATE_PRODUCT)) {
             Product productBeforeUpdate = getProductById(productId);
-            statement.setInt(3, productId);
+            statement.setInt(4, productId);
             statement.setString(1, newName);
             statement.setInt(2, newPrice);
+            statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now().withSecond(0)));
             statement.executeUpdate();
             return productBeforeUpdate;
         }

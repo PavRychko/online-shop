@@ -69,8 +69,8 @@ public class JdbcProductsDaoITest {
 
         products = jdbcProductsDao.getProducts();
         assertFalse(products.isEmpty());
-        assertNotEquals(products.get(products.size()-1).getName(),oldProduct.getName());
-        assertNotEquals(products.get(products.size()-1).getPrice(),oldProduct.getPrice());
+        assertNotEquals(products.get(products.size() - 1).getName(), oldProduct.getName());
+        assertNotEquals(products.get(products.size() - 1).getPrice(), oldProduct.getPrice());
     }
 
     // if you don`t have table Products in your database, uncomment code below

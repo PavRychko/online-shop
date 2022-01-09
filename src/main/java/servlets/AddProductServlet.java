@@ -3,7 +3,7 @@ package servlets;
 import dao.mapper.ProductFromRequestMapper;
 import entity.Product;
 import generators.PageGenerator;
-import service.AddProductService;
+import services.AddProductService;
 
 
 import javax.servlet.http.HttpServlet;

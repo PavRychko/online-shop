@@ -1,4 +1,4 @@
-package service;
+package services;
 
 import dao.jdbc.JdbcProductsDao;
 import entity.Product;
@@ -10,7 +10,7 @@ import java.util.List;
 public class ProductService {
     private final JdbcProductsDao jdbcProductsDao = new JdbcProductsDao();
 
-    public List<Product> getAll()  {
+    public List<Product> getAll() {
         List<Product> list = null;
         try {
             list = jdbcProductsDao.getProducts();
@@ -18,7 +18,7 @@ public class ProductService {
                 jdbcProductsDao.createProductsTable();
                 return Collections.emptyList();
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Something gone wrong in getAll from productService");
             e.printStackTrace();
         }
